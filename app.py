@@ -100,10 +100,26 @@ if st.session_state.problem:
 
     st.divider()
     
-    # 解答エリア
-    st.markdown("#### 🖋️ Answer")
-    ans_col, btn_col = st.columns([2, 1])
-    with ans_col:
+# --- 解答エリア ---
+st.markdown("#### 🖋️ Answer")
+
+# ▼ ここから追加：簡易電卓機能
+with st.expander("🧮 計算用メモ（電卓）を開く"):
+    st.caption("Excelのように数式を入力して計算できます（例: (200 * 0.7 * 1.02) / 22.68）")
+    calc_input = st.text_input("数式を入力:", key="calculator")
+    if calc_input:
+        try:
+            # 安全に計算を実行するための処理
+            result = eval(calc_input.replace('×', '*').replace('÷', '/'))
+            st.success(f"計算結果: **{result:,.4f}**")
+            st.info("この数値をコピーして下の回答欄に貼り付けてください。")
+        except:
+            st.error("正しい数式を入力してください。")
+# ▲ ここまで追加
+
+ans_col, btn_col = st.columns([2, 1])
+with ans_col:
+    user_ans = st.number_input("算出単価 (円/kg)", min_value=0.0, format="%.2f")
         user_ans = st.number_input("算出単価 (円/kg)", min_value=0.0, format="%.2f")
     with btn_col:
         st.write(" ") # 余白調整
